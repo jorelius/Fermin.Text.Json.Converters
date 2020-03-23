@@ -18,9 +18,8 @@ public class MixedDto
     public dynamic bar {get; set;}
 }
 
-// add converter to serializer
-var options = new JsonSerializerOptions();
-options.Converters.Add(new DynamicConverter());
+// add converter to serializer using extension method
+var options = new JsonSerializerOptions().AddDynamicConverter();
 
 // convert to dto
 MixedDto dto = JsonSerializer.Deserialize<MixedDto>(json, options);
@@ -31,9 +30,8 @@ Directly to dynamic
 
 ``` csharp
 
-// add converter to serializer
-var options = new JsonSerializerOptions();
-options.Converters.Add(new DynamicConverter());
+// add converter to serializer using extension method
+var options = new JsonSerializerOptions().AddDynamicConverter();
 
 dynamic dto = JsonSerializer.Deserialize<dynamic>(json, options);
 
