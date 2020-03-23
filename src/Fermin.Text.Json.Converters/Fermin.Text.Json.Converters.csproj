@@ -2,6 +2,30 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+
+    <PackageId>Fermin.Text.Json.Converters</PackageId>
+    <Version>1.0.1</Version>
+    <Product>Fermin.Text.Json.Converters</Product>
+    <Authors>Jorel Fermin</Authors>
+    <Copyright>Jorel Fermin</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Description>Set of System.Text.Json Converts that are not included by default.</Description>
+
+    <!-- Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+
+    <!-- Build symbol package (.snupkg) to distribute the PDB containing Source Link -->
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+    <RepositoryUrl>https://github.com/jorelius/Fermin.Text.Json.Converters</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+  </ItemGroup>
 
 </Project>

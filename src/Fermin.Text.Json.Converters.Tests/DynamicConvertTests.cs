@@ -10,8 +10,7 @@ namespace Fermin.Text.Json.Converters.Tests
         [Fact]
         public void SerializeToandFromMixedDto()
         {
-            var options = new JsonSerializerOptions();
-            options.Converters.Add(new DynamicConverter());
+            var options = new JsonSerializerOptions().AddDynamicConverter();
 
             MixedDto dto = JsonSerializer.Deserialize<MixedDto>(mixedJson, options);
 
@@ -35,8 +34,7 @@ namespace Fermin.Text.Json.Converters.Tests
         [Fact]
         public void SerializeToAndFromDynamic()
         {
-            var options = new JsonSerializerOptions();
-            options.Converters.Add(new DynamicConverter());
+            var options = new JsonSerializerOptions().AddDynamicConverter();
 
             dynamic dto = JsonSerializer.Deserialize<dynamic>(mixedJson, options);
 
