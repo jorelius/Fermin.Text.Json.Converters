@@ -9,6 +9,21 @@ namespace Fermin.Text.Json.Converters
 {
     public class DynamicConverter : JsonConverter<dynamic>
     {
+        public override bool CanConvert(Type typeToConvert)
+        {
+            if (base.CanConvert(typeToConvert))
+            {
+                return true;
+            }
+
+            if(typeToConvert == typeof(ExpandoObject))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public override dynamic Read(
             ref Utf8JsonReader reader,
             Type typeToConvert,
@@ -32,7 +47,59 @@ namespace Fermin.Text.Json.Converters
             object value,
             JsonSerializerOptions options)
         {
+            Type typeOfValue = value.GetType();
+            if (typeOfValue == typeof(ExpandoObject))
+            {  
+                Write(writer, (ExpandoObject)value, options);
+                return; 
+            }
+
+            if (typeOfValue == typeof(int))
+            {
+                writer.WriteNumberValue((int)value);
+                return;
+            }
+
+            if (typeOfValue == typeof(long))
+            {
+                writer.WriteNumberValue((long)value);
+                return;
+            }
+
+            if (typeOfValue == typeof(double))
+            {
+                writer.WriteNumberValue((double)value);
+                return;
+            }
+
+            if (typeOfValue == typeof(short))
+            {
+                writer.WriteNumberValue((short)value);
+                return;
+            }
+
+            if (typeOfValue.IsArray)
+            {
+                // do something
+                return; 
+            }
+
             writer.WriteStringValue(value.ToString());
+        }
+
+        private void Write(Utf8JsonWriter writer,
+            ExpandoObject value,
+            JsonSerializerOptions options)
+        {
+            writer.WriteStartObject();
+            
+            foreach(var item in value)
+            {
+                writer.WritePropertyName(item.Key);
+                Write(writer, (object)item.Value, options);
+            }
+
+            writer.WriteEndObject();
         }
 
         private JsonElement DefaultCase(ref Utf8JsonReader reader)
