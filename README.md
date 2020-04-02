@@ -36,3 +36,15 @@ var options = new JsonSerializerOptions().AddDynamicConverter();
 dynamic dto = JsonSerializer.Deserialize<dynamic>(json, options);
 
 ```
+
+Annotated Dto
+
+``` csharp
+public class AnnotatedMixedDto
+{
+    public string foo {get; set;}
+
+    [JsonConverter(typeof(DynamicConverter))]
+    public dynamic bar {get; set;}
+}
+```
