@@ -9,6 +9,21 @@ namespace Fermin.Text.Json.Converters
 {
     public class DynamicConverter : JsonConverter<dynamic>
     {
+        public override bool CanConvert(Type typeToConvert)
+        {
+            if (base.CanConvert(typeToConvert))
+            {
+                return true;
+            }
+
+            if(typeToConvert == typeof(ExpandoObject))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public override dynamic Read(
             ref Utf8JsonReader reader,
             Type typeToConvert,
@@ -32,7 +47,78 @@ namespace Fermin.Text.Json.Converters
             object value,
             JsonSerializerOptions options)
         {
+            if (value == null)
+            {
+                writer.WriteNullValue();
+                return;
+            }
+
+            Type typeOfValue = value.GetType();
+            if (typeOfValue == typeof(ExpandoObject))
+            {  
+                Write(writer, (ExpandoObject)value, options);
+                return; 
+            }
+
+            if (typeOfValue == typeof(int))
+            {
+                writer.WriteNumberValue((int)value);
+                return;
+            }
+
+            if (typeOfValue == typeof(long))
+            {
+                writer.WriteNumberValue((long)value);
+                return;
+            }
+
+            if (typeOfValue == typeof(double))
+            {
+                writer.WriteNumberValue((double)value);
+                return;
+            }
+
+            if (typeOfValue == typeof(short))
+            {
+                writer.WriteNumberValue((short)value);
+                return;
+            }
+
+            List<Object> list; 
+            if ((list = value as List<Object>) != null)
+            {
+                WriteList(writer, list, options);
+                return;
+            }
+
             writer.WriteStringValue(value.ToString());
+        }
+
+        private void WriteList(Utf8JsonWriter writer, List<Object> value, JsonSerializerOptions options)
+        {
+            writer.WriteStartArray();
+
+            foreach(var item in value)
+            {
+                Write(writer, item, options);
+            }
+
+            writer.WriteEndArray();
+        }
+
+        private void Write(Utf8JsonWriter writer,
+            ExpandoObject value,
+            JsonSerializerOptions options)
+        {
+            writer.WriteStartObject();
+
+            foreach(var item in value)
+            {
+                writer.WritePropertyName(item.Key);
+                Write(writer, (object)item.Value, options);
+            }
+
+            writer.WriteEndObject();
         }
 
         private JsonElement DefaultCase(ref Utf8JsonReader reader)
@@ -80,7 +166,7 @@ namespace Fermin.Text.Json.Converters
             return expandoObject;
         }
 
-        private object? ReadValue(JsonElement jsonElement)
+        private object ReadValue(JsonElement jsonElement)
         {
             return jsonElement.ValueKind switch
             {
@@ -96,14 +182,24 @@ namespace Fermin.Text.Json.Converters
             };
         }
 
-        private object? ReadList(JsonElement jsonElement)
+        private object ReadList(JsonElement jsonElement)
         {
-            IList<object?> list = new List<object?>();
+            IList<object> list = new List<object>();
             foreach (var item in jsonElement.EnumerateArray())
             {
                 list.Add(ReadValue(item));
             }
             return list.Count == 0 ? null : list;
         }
+
+        // private dynamic ReadList(JsonElement jsonElement)
+        // {
+        //     dynamic list = new List<dynamic>();
+        //     foreach (var item in jsonElement.EnumerateArray())
+        //     {
+        //         list.Add(ReadValue(item));
+        //     }
+        //     return list;
+        // }
     }
 }

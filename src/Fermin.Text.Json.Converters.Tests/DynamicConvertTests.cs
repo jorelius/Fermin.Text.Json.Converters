@@ -1,6 +1,8 @@
 using System;
 using System.Dynamic;
 using System.Text.Json;
+using System.Text.Json.Serialization;
+using Fermin.Text.Json.Converters;
 using Xunit;
 
 namespace Fermin.Text.Json.Converters.Tests
@@ -23,7 +25,9 @@ namespace Fermin.Text.Json.Converters.Tests
             Assert.Equal(mixedJson, dtoString);
         }
 
-        private const string mixedJson = "{\"foo\":\"test\",\"bar\":{\"baz\":{\"qux\":1},\"quux\":\"quuz\"}}";
+        //private const string mixedJson = "{\"foo\":\"test\",\"bar\":{\"baz\":{\"qux\":1},\"quux\":\"quuz\"}}";
+        private const string mixedJson = "{\"foo\":\"test\",\"bar\":{\"baz\":{\"qux\":1},\"quux\":\"quuz\",\"corge\":[\"blah\"]}}";
+        
 
         public class MixedDto
         {
@@ -46,5 +50,30 @@ namespace Fermin.Text.Json.Converters.Tests
 
             Assert.Equal(mixedJson, dtoString);
         }
+
+        public class AnnotatedMixedDto
+        {
+            public string foo {get; set;}
+
+            [JsonConverter(typeof(DynamicConverter))]
+            public dynamic bar {get; set;}
+        }
+
+        [Fact]
+        public void SerializeAnnotatedDto()
+        {
+            var options = new JsonSerializerOptions();
+
+            AnnotatedMixedDto dto = JsonSerializer.Deserialize<AnnotatedMixedDto>(mixedJson, options);
+
+            Assert.Equal("test", dto.foo);
+            Assert.Equal(1, dto.bar.baz.qux);
+            Assert.Equal("quuz", dto.bar.quux);
+
+            string dtoString = JsonSerializer.Serialize<AnnotatedMixedDto>(dto, options);
+
+            Assert.Equal(mixedJson, dtoString);
+        }
+
     }
 }

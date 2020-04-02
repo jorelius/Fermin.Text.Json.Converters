@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
 
     <PackageId>Fermin.Text.Json.Converters</PackageId>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Product>Fermin.Text.Json.Converters</Product>
     <Authors>Jorel Fermin</Authors>
     <Copyright>Jorel Fermin</Copyright>
