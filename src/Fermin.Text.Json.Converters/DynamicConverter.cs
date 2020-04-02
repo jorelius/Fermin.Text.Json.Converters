@@ -189,17 +189,7 @@ namespace Fermin.Text.Json.Converters
             {
                 list.Add(ReadValue(item));
             }
-            return list.Count == 0 ? null : list;
+            return list;
         }
-
-        // private dynamic ReadList(JsonElement jsonElement)
-        // {
-        //     dynamic list = new List<dynamic>();
-        //     foreach (var item in jsonElement.EnumerateArray())
-        //     {
-        //         list.Add(ReadValue(item));
-        //     }
-        //     return list;
-        // }
     }
 }
