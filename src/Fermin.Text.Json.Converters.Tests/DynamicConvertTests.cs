@@ -26,7 +26,7 @@ namespace Fermin.Text.Json.Converters.Tests
         }
 
         //private const string mixedJson = "{\"foo\":\"test\",\"bar\":{\"baz\":{\"qux\":1},\"quux\":\"quuz\"}}";
-        private const string mixedJson = "{\"foo\":\"test\",\"bar\":{\"baz\":{\"qux\":1},\"quux\":\"quuz\",\"corge\":[\"blah\"]}}";
+        private const string mixedJson = "{\"foo\":\"test\",\"bar\":{\"baz\":{\"qux\":1},\"quux\":\"quuz\",\"corge\":[\"blah\"],\"grault\":[]}}";
         
 
         public class MixedDto
