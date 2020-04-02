@@ -25,8 +25,8 @@ namespace Fermin.Text.Json.Converters.Tests
             Assert.Equal(mixedJson, dtoString);
         }
 
-        private const string mixedJson = "{\"foo\":\"test\",\"bar\":{\"baz\":{\"qux\":1},\"quux\":\"quuz\"}}";
-        // private const string mixedJson = "{\"foo\":\"test\",\"bar\":{\"baz\":{\"qux\":1},\"quux\":\"quuz\",\"corge\":[]}}";
+        //private const string mixedJson = "{\"foo\":\"test\",\"bar\":{\"baz\":{\"qux\":1},\"quux\":\"quuz\"}}";
+        private const string mixedJson = "{\"foo\":\"test\",\"bar\":{\"baz\":{\"qux\":1},\"quux\":\"quuz\",\"corge\":[\"blah\"]}}";
         
 
         public class MixedDto
