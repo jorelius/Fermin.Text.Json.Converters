@@ -1,10 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
 
     <PackageId>Fermin.Text.Json.Converters</PackageId>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <Product>Fermin.Text.Json.Converters</Product>
     <Authors>Jorel Fermin</Authors>
     <Copyright>Jorel Fermin</Copyright>
@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+    <PackageReference Include="System.Text.Json" Version="4.7.1" />
   </ItemGroup>
 
 </Project>
