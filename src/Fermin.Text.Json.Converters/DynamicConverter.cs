@@ -148,6 +148,16 @@ namespace Fermin.Text.Json.Converters
             return reader.GetDouble();
         }
 
+        private double ReadNumber(JsonElement jsonElement)
+        {
+            if (jsonElement.TryGetInt64(out long l))
+            {
+                return (double)l;
+            }
+
+            return jsonElement.GetDouble();
+        }
+
         private object ReadObject(ref Utf8JsonReader reader)
         {
             using JsonDocument documentV = JsonDocument.ParseValue(ref reader);
@@ -173,7 +183,7 @@ namespace Fermin.Text.Json.Converters
                 JsonValueKind.True => true,
                 JsonValueKind.False => false,
                 JsonValueKind.String => jsonElement.ToString(), // may need to deal with datetime and other things stored as strings in json
-                JsonValueKind.Number => jsonElement.TryGetInt64(out long l)? l : 0, // may need to deal with other number types
+                JsonValueKind.Number => ReadNumber(jsonElement),
                 JsonValueKind.Object => ReadObject(jsonElement),
                 JsonValueKind.Array => ReadList(jsonElement),
                 JsonValueKind.Undefined => null, 
