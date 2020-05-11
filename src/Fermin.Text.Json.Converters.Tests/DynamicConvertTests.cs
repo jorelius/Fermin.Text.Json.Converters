@@ -26,11 +26,12 @@ namespace Fermin.Text.Json.Converters.Tests
         }
 
         //private const string mixedJson = "{\"foo\":\"test\",\"bar\":{\"baz\":{\"qux\":1},\"quux\":\"quuz\"}}";
-        private const string mixedJson = "{\"foo\":\"test\",\"bar\":{\"baz\":{\"qux\":1},\"quux\":\"quuz\",\"corge\":[\"blah\"],\"grault\":[]}}";
+        private const string mixedJson = "{\"num\":0.2345,\"foo\":\"test\",\"bar\":{\"baz\":{\"qux\":1},\"quux\":\"quuz\",\"corge\":[\"blah\"],\"grault\":[]}}";
         
 
         public class MixedDto
         {
+            public double num {get; set;}
             public string foo {get; set;}
             public dynamic bar {get; set;}
         }
@@ -44,6 +45,7 @@ namespace Fermin.Text.Json.Converters.Tests
 
             Assert.Equal("test", dto.foo);
             Assert.Equal(1, dto.bar.baz.qux);
+            Assert.Equal(0.2345, dto.num);
             Assert.Equal("quuz", dto.bar.quux);
 
             string dtoString = JsonSerializer.Serialize<dynamic>(dto, options);
@@ -53,6 +55,7 @@ namespace Fermin.Text.Json.Converters.Tests
 
         public class AnnotatedMixedDto
         {
+            public double num {get; set;}
             public string foo {get; set;}
 
             [JsonConverter(typeof(DynamicConverter))]
