@@ -16,6 +16,11 @@ namespace Fermin.Text.Json.Converters
                 return true;
             }
 
+            if (typeToConvert == typeof(JsonElement))
+            {
+                return true;
+            }
+
             if(typeToConvert == typeof(ExpandoObject))
             {
                 return true;
@@ -58,6 +63,12 @@ namespace Fermin.Text.Json.Converters
             {  
                 Write(writer, (ExpandoObject)value, options);
                 return; 
+            }
+
+            if (typeOfValue == typeof(JsonElement))
+            {
+                ((JsonElement)value).WriteTo(writer);
+                return;
             }
 
             if (typeOfValue == typeof(int))

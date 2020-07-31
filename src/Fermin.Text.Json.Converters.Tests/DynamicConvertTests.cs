@@ -78,5 +78,26 @@ namespace Fermin.Text.Json.Converters.Tests
             Assert.Equal(mixedJson, dtoString);
         }
 
+
+        private const string dynamicArray = "{\"bar\":[{\"SomeString\":\"a string in an object in an array\"}]}";
+
+        public class dynamicArrayDto
+        {
+            [JsonConverter(typeof(DynamicConverter))]
+            public dynamic bar {get; set;}
+        }
+
+        [Fact]
+        public void DeserializeDynamicArrayDto()
+        {
+            var options = new JsonSerializerOptions();
+
+            dynamicArrayDto dto = JsonSerializer.Deserialize<dynamicArrayDto>(dynamicArray, options);
+
+            string dtoString = JsonSerializer.Serialize<dynamic>(dto, options);
+
+            Assert.Equal(dynamicArray, dtoString);
+        }
+
     }
 }
