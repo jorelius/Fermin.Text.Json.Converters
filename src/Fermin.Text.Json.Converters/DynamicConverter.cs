@@ -71,6 +71,12 @@ namespace Fermin.Text.Json.Converters
                 return;
             }
 
+            if (typeOfValue == typeof(Boolean))
+            {
+                writer.WriteBooleanValue((bool)value);
+                return;
+            }
+
             if (typeOfValue == typeof(int))
             {
                 writer.WriteNumberValue((int)value);

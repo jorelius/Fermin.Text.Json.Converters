@@ -99,5 +99,19 @@ namespace Fermin.Text.Json.Converters.Tests
             Assert.Equal(dynamicArray, dtoString);
         }
 
+
+        private const string booleanJson = "{\"bar\":{\"SomeBool\":true}}";
+
+        [Fact]
+        public void DeserializeDynamicBooleanDto()
+        {
+            var options = new JsonSerializerOptions();
+
+            dynamicArrayDto dto = JsonSerializer.Deserialize<dynamicArrayDto>(dynamicArray, options);
+
+            string dtoString = JsonSerializer.Serialize<dynamic>(dto, options);
+
+            Assert.Equal(dynamicArray, dtoString);
+        }
     }
 }
