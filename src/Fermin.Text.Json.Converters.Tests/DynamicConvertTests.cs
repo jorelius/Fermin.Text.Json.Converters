@@ -1,8 +1,5 @@
-using System;
-using System.Dynamic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Fermin.Text.Json.Converters;
 using Xunit;
 
 namespace Fermin.Text.Json.Converters.Tests

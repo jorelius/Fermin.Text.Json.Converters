@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 
@@ -71,7 +70,7 @@ namespace Fermin.Text.Json.Converters
                 return;
             }
 
-            if (typeOfValue == typeof(Boolean))
+            if (typeOfValue == typeof(bool))
             {
                 writer.WriteBooleanValue((bool)value);
                 return;
