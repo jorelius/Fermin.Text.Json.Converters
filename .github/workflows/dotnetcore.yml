@@ -32,7 +32,5 @@ jobs:
       - name: Pack Nuget Package
         run: dotnet pack ./src/Fermin.Text.Json.Converters --configuration Release
       - name: Push package to Nuget
-        run: dotnet nuget push **/*.nupkg
-              --api-key ${{ secrets.NUGET_DEPLOY_KEY }}
-              --source https://api.nuget.org/v3/index.json
+        run: dotnet nuget push **/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_DEPLOY_KEY }}
 
