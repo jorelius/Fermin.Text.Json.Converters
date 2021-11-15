@@ -5,7 +5,7 @@
     <LangVersion>8.0</LangVersion>
 
     <PackageId>Fermin.Text.Json.Converters</PackageId>
-    <Version>2.0.1</Version>
+    <Version>2.1</Version>
     <Product>Fermin.Text.Json.Converters</Product>
     <Authors>Jorel Fermin</Authors>
     <Copyright>Jorel Fermin</Copyright>
