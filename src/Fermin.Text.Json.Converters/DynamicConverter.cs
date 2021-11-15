@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Collections.Generic;
@@ -21,6 +22,16 @@ namespace Fermin.Text.Json.Converters
             }
 
             if(typeToConvert == typeof(ExpandoObject))
+            {
+                return true;
+            }
+
+            if (IsList(typeToConvert))
+            {
+                return true;
+            }
+
+            if (IsDictionary(typeToConvert))
             {
                 return true;
             }
@@ -100,21 +111,57 @@ namespace Fermin.Text.Json.Converters
                 return;
             }
 
-            List<Object> list; 
-            if ((list = value as List<Object>) != null)
+            if (IsList(typeOfValue))
             {
-                WriteList(writer, list, options);
-                return;
+                IList list;
+                if ((list = value as IList) != null)
+                {
+                    WriteList(writer, list, options);
+                    return;
+                }
+            }
+
+            if (IsDictionary(typeOfValue))
+            {
+                IDictionary dictionary;
+                if ((dictionary = value as IDictionary) != null)
+                {
+                    WriteDictionary(writer, dictionary, options);
+                    return;
+                }
             }
 
             writer.WriteStringValue(value.ToString());
         }
 
-        private void WriteList(Utf8JsonWriter writer, List<Object> value, JsonSerializerOptions options)
+        private bool IsDictionary(Type typeToConvert)
+        {
+            return typeToConvert.IsGenericType && typeToConvert.GetGenericTypeDefinition() == typeof(Dictionary<,>);
+        }
+
+        private bool IsList(Type typeToConvert)
+        {
+            return typeToConvert.IsGenericType && typeToConvert.GetGenericTypeDefinition() == typeof(List<>);
+        }
+
+        private void WriteDictionary(Utf8JsonWriter writer, IDictionary dictionary, JsonSerializerOptions options)
+        {
+            writer.WriteStartObject();
+
+            foreach (DictionaryEntry entry in dictionary)
+            {
+                writer.WritePropertyName(entry.Key.ToString());
+                Write(writer, entry.Value, options);
+            }
+
+            writer.WriteEndObject();
+        }
+
+        private void WriteList(Utf8JsonWriter writer, IList value, JsonSerializerOptions options)
         {
             writer.WriteStartArray();
 
-            foreach(var item in value)
+            foreach (var item in value)
             {
                 Write(writer, item, options);
             }
