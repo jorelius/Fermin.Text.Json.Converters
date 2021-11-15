@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Dynamic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Xunit;
@@ -84,6 +86,84 @@ namespace Fermin.Text.Json.Converters.Tests
             public dynamic bar {get; set;}
         }
 
+        [Fact]
+        public void SerializeAnnotatedDtoDictionary()
+        {
+            var options = new JsonSerializerOptions().AddDynamicConverter();
+            
+            string json = "{\"num\":0,\"foo\":null,\"bar\":{\"key1\":\"value1\"}}";
+            AnnotatedMixedDto dto = new AnnotatedMixedDto()
+            {
+                bar = new Dictionary<string, string>()
+                {
+                    {"key1", "value1"}
+                }
+            };
+            
+            string dtoString = JsonSerializer.Serialize<AnnotatedMixedDto>(dto, options);
+            Assert.Equal(json, dtoString);
+            
+            AnnotatedMixedDto dto1 = JsonSerializer.Deserialize<AnnotatedMixedDto>(dtoString, options);
+
+            Assert.Null(dto1.foo);
+            Assert.Equal(0, dto1.num);
+            Assert.Equal(typeof(ExpandoObject), dto1.bar.GetType());
+        }
+        
+        
+        [Fact]
+        public void SerializeAnnotatedDtoDynamicDictionary()
+        {
+            var options = new JsonSerializerOptions().AddDynamicConverter();
+            
+            string json = "{\"num\":0,\"foo\":null,\"bar\":{\"key1\":{\"k\":\"v\"}}}";
+            AnnotatedMixedDto dto = new AnnotatedMixedDto()
+            {
+                bar = new Dictionary<string, dynamic>()
+                {
+                    {"key1", new Dictionary<string, string>{{"k", "v"}}}
+                }
+            };
+            
+            string dtoString = JsonSerializer.Serialize<AnnotatedMixedDto>(dto, options);
+            Assert.Equal(json, dtoString);
+            
+            AnnotatedMixedDto dto1 = JsonSerializer.Deserialize<AnnotatedMixedDto>(dtoString, options);
+
+            Assert.Null(dto1.foo);
+            Assert.Equal(0, dto1.num);
+            Assert.Equal(typeof(ExpandoObject), dto1.bar.GetType());
+        }
+
+        
+
+        [Fact]
+        public void SerializeAnnotatedDtoDynamicListDictionary()
+        {
+            var options = new JsonSerializerOptions().AddDynamicConverter();
+            
+            string json = "{\"num\":0,\"foo\":null,\"bar\":{\"key1\":{\"k\":[\"u\",\"v\"]}}}";
+            AnnotatedMixedDto dto = new AnnotatedMixedDto()
+            {
+                bar = new Dictionary<string, dynamic>()
+                {
+                    {"key1", 
+                        new Dictionary<string, List<string>>{{"k", new List<string>(){"u", "v"}}}}
+                }
+            };
+            
+            string dtoString = JsonSerializer.Serialize<AnnotatedMixedDto>(dto, options);
+            Assert.Equal(json, dtoString);
+            
+            AnnotatedMixedDto dto1 = JsonSerializer.Deserialize<AnnotatedMixedDto>(dtoString, options);
+
+            Assert.Null(dto1.foo);
+            Assert.Equal(0, dto1.num);
+            Assert.Equal(typeof(ExpandoObject), dto1.bar.GetType());
+        }
+
+        
+        
         [Fact]
         public void DeserializeDynamicArrayDto()
         {
