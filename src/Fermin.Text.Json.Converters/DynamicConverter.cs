@@ -26,16 +26,6 @@ namespace Fermin.Text.Json.Converters
                 return true;
             }
 
-            if (IsList(typeToConvert))
-            {
-                return true;
-            }
-
-            if (IsDictionary(typeToConvert))
-            {
-                return true;
-            }
-
             return false;
         }
 
